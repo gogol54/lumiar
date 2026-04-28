@@ -13,33 +13,25 @@ import Image from 'next/image'
 
 const etapas = [
   {
-    numero:'01',
+    id:0,
     titulo:'Entendimento do cenário',
     texto:'Conversas iniciais para compreender desafios, necessidades e contexto da organização.'
   },
   {
-    numero:'02',
+    id:1,
     titulo:'Estruturação da proposta',
     texto:'Construção da proposta de cultura e processos alinhados ao negócio.'
   },
   {
-    numero:'03',
+    id:2,
     titulo:'Validação com lideranças',
     texto:'Revisão e alinhamento com a direção antes da implantação.'
   },
   {
-    numero:'04',
+    id:3,
     titulo:'Implantação e treinamento',
     texto:'Imersão com lideranças e apresentação para as equipes.'
   },
-]
-
-const horas = [
-  'Entendimento inicial — 6 horas',
-  'Construção da proposta — 4 horas',
-  'Treinamento com lideranças — 3 horas',
-  'Apresentação às equipes — 2 horas',
-  'Primeiros processos — 2 horas'
 ]
 
 export default function Home(){
@@ -49,7 +41,7 @@ export default function Home(){
       <Topbar />
       {/* HERO */}
       <Container maxWidth="lg" sx={{py:5}}>
-        <Box textAlign="center" alignItems="center" maxWidth={820} mx="auto">
+        <Box id="cultura" textAlign="center" alignItems="center" maxWidth={820} mx="auto">
           <div sx={{mb:5}}>
             <Image 
               src="/logo.png"  
@@ -108,7 +100,7 @@ export default function Home(){
 
 
       {/* CULTURA */}
-      <Box sx={{background:'#f8fbf7', py:10}}>
+      <Box id="etapas" sx={{background:'#f8fbf7', py:10}}>
         <Container maxWidth="lg">
 
           <Grid container spacing={6} alignItems="center">
@@ -207,16 +199,6 @@ export default function Home(){
                 }}
               >
                 <CardContent sx={{p:4}}>
-
-                  <Typography
-                    color="#86d464"
-                    fontWeight={700}
-                    mb={1}
-                    fontSize="1.15rem"
-                  >
-                    {etapa.numero}
-                  </Typography>
-
                   <Typography
                     variant="h6"
                     mb={1.5}
@@ -241,52 +223,6 @@ export default function Home(){
         </Container>
       </Box>
 
-
-
-      {/* INVESTIMENTO */}
-      <Box sx={{background:'#f8fbf7', py:10, mx:'200'}}>
-        <Container maxWidth="md">
-          <Typography
-            variant="h4"
-            textAlign="center"
-            fontWeight={700}
-            color="#246044"
-            sx={{ mb: '20px' }}
-          >
-            Carga horária e investimento
-          </Typography>
-
-          <Card
-            sx={{
-              border:'1px solid #e7efe7',
-              borderRadius:5,
-              boxShadow:'none'
-            }}
-          >
-            <CardContent sx={{p:5}}>
-              <Stack spacing={2} mb={5}>
-                {horas.map(item=>(
-                  <Typography key={item}>
-                    {item}
-                  </Typography>
-                ))}
-              </Stack>
-
-              <Typography
-                variant="h5"
-                fontWeight={700}
-                mb={1}
-              >
-                R$ 75,00 / hora
-              </Typography>
-
-              <Typography color="text.secondary">
-                Estimativa inicial conforme escopo apresentado.
-              </Typography>
-            </CardContent>
-          </Card>
-        </Container>
-      </Box>
     </Box>
   )
 }

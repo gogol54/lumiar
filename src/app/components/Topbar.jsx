@@ -22,7 +22,6 @@ export default function Topbar() {
  const menuItems = [
    { label:'Cultura', href:'#cultura' },
    { label:'Etapas', href:'#etapas' },
-   { label:'Investimento', href:'#investimento' },
  ]
 
  return (
