@@ -3648,6 +3648,7 @@ __metadata:
     nodemailer: "npm:^8.0.7"
     react: "npm:19.2.4"
     react-dom: "npm:19.2.4"
+    sweetalert2: "npm:^11.26.24"
     tailwindcss: "npm:^4"
   languageName: unknown
   linkType: soft
@@ -4663,6 +4664,13 @@ __metadata:
   version: 1.0.0
   resolution: "supports-preserve-symlinks-flag@npm:1.0.0"
   checksum: 10c0/6c4032340701a9950865f7ae8ef38578d8d7053f5e10518076e6554a9381fa91bd9c6850193695c141f32b21f979c985db07265a758867bac95de05f7d8aeb39
+  languageName: node
+  linkType: hard
+
+"sweetalert2@npm:^11.26.24":
+  version: 11.26.24
+  resolution: "sweetalert2@npm:11.26.24"
+  checksum: 10c0/f002ff982f2cfe48ff24e2faefd990776d7ad38e6d13024fdbdd178f464154061d665682102ddfcb9a65c15019011c6ddae67a93416d4b07716fce77fe9a8484
   languageName: node
   linkType: hard
 

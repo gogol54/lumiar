@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 import {
   Alert,
@@ -38,9 +39,9 @@ export default function FormReport() {
     identificada: "sim",
     consentimento: false,
   });
+
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, checked, type } = e.target;
@@ -52,8 +53,26 @@ export default function FormReport() {
   };
 
   const handleSubmit = async () => {
+    if (!formData.consentimento) {
+      return Swal.fire({
+        icon: "warning",
+        title: "Consentimento necessário",
+        text: "Aceite a política de privacidade para continuar.",
+        confirmButtonColor: "#86d464",
+      });
+    }
+
     try {
       setLoading(true);
+
+      Swal.fire({
+        title: "Enviando manifestação...",
+        text: "Aguarde um instante",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
 
       const payload = new FormData();
 
@@ -74,9 +93,42 @@ export default function FormReport() {
         throw new Error("Falha ao enviar");
       }
 
-      setSuccess(true);
+      Swal.close();
+
+      await Swal.fire({
+        icon: "success",
+        title: "Manifestação enviada",
+        text: "Seu relato e anexo foram enviados com sucesso.",
+        confirmButtonColor: "#86d464",
+      });
+
+      setFormData({
+        tipo: "",
+        dataOcorrido: "",
+        local: "",
+        nome: "",
+        email: "",
+        empresa: "",
+        setor: "",
+        retorno: "sim",
+        whatsapp: "",
+        descricao: "",
+        identificada: "sim",
+        consentimento: false,
+      });
+
+      setFile(null);
     } catch (err) {
       console.error(err);
+
+      Swal.close();
+
+      Swal.fire({
+        icon: "error",
+        title: "Erro no envio",
+        text: "Não foi possível enviar agora.",
+        confirmButtonColor: "#d9534f",
+      });
     } finally {
       setLoading(false);
     }
@@ -145,12 +197,6 @@ export default function FormReport() {
           Você pode registrar sua manifestação com identificação.
         </Alert>
 
-        {success && (
-          <Alert severity="success" sx={{ mb: 3 }}>
-            Manifestação enviada com sucesso.
-          </Alert>
-        )}
-
         <Stack spacing={3}>
           <Card
             sx={{
@@ -175,11 +221,8 @@ export default function FormReport() {
                   label="Tipo de denúncia"
                 >
                   <MenuItem value="moral">Assédio Moral</MenuItem>
-
                   <MenuItem value="discriminacao">Discriminação</MenuItem>
-
                   <MenuItem value="fraude">Fraude</MenuItem>
-
                   <MenuItem value="outros">Outros</MenuItem>
                 </TextField>
 
@@ -327,12 +370,12 @@ export default function FormReport() {
             }}
           >
             <CardContent sx={{ p: 3.5 }}>
-              <Typography variant="h6" fontWeight={600} mb={2.5}>
-                Evidências e consentimentos{" "}
-                <p className="text-sm mb-4">
-                  (Somente imagem, PDFs ou documentos Word; para mais evidências
-                  aguarde nosso retorno...)
-                </p>
+              <Typography variant="h6" fontWeight={600} mb={1}>
+                Evidências e consentimentos
+              </Typography>
+
+              <Typography variant="body2" mb={3}>
+                (Somente imagem, PDFs ou Word)
               </Typography>
 
               <Stack spacing={2.2}>
@@ -344,12 +387,27 @@ export default function FormReport() {
                     py: 1.2,
                   }}
                 >
-                  Anexar documentos
+                  {file ? "Arquivo carregado ✓" : "Anexar documentos"}
+
                   <input
                     hidden
                     type="file"
                     accept="image/*,.pdf,.doc,.docx"
-                    onChange={(e) => setFile(e.target.files?.[0] || null)}
+                    onChange={(e) => {
+                      const selected = e.target.files?.[0] || null;
+                      setFile(selected);
+
+                      if (selected) {
+                        Swal.fire({
+                          toast: true,
+                          position: "top-end",
+                          icon: "success",
+                          title: "Anexo carregado",
+                          showConfirmButton: false,
+                          timer: 2000,
+                        });
+                      }
+                    }}
                   />
                 </Button>
 
