@@ -1,16 +1,32 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
+
 import {
-  AppBar,
-  Toolbar,
-  Box,
-  Button,
-  Typography,
+ AppBar,
+ Toolbar,
+ Typography,
+ Box,
+ Button,
+ IconButton,
+ Drawer,
+ Stack
 } from '@mui/material'
 
-export default function Topbar(){
+import MenuIcon from '@mui/icons-material/Menu'
+
+export default function Topbar() {
+ const [open, setOpen] = useState(false)
+
+ const menuItems = [
+   { label:'Cultura', href:'#cultura' },
+   { label:'Etapas', href:'#etapas' },
+   { label:'Investimento', href:'#investimento' },
+ ]
+
  return (
+ <>
   <AppBar
     position="sticky"
     elevation={0}
@@ -19,45 +35,109 @@ export default function Topbar(){
       borderBottom:'1px solid #e7efe7'
     }}
   >
-    <Toolbar
+   <Toolbar
+    sx={{
+      maxWidth:1200,
+      width:'100%',
+      mx:'auto',
+      justifyContent:'space-between'
+    }}
+   >
+
+    <Typography
+      fontWeight={700}
+      color="#246044"
+    >
+      Cultura e Processos
+    </Typography>
+
+
+    <Box
       sx={{
-        maxWidth:1200,
-        width:'100%',
-        mx:'auto',
-        justifyContent:'space-between'
+        display:{
+          xs:'none',
+          md:'flex'
+        },
+        gap:1.5
       }}
     >
-      <Typography
-        fontWeight={700}
-        color="#246044"
-      >
-        Cultura e Processos
-      </Typography>
+      {menuItems.map((item)=>(
+        <Button
+          key={item.label}
+          href={item.href}
+        >
+          {item.label}
+        </Button>
+      ))}
 
-      <Box sx={{display:'flex', gap:1.5}}>
-        <Button href="#cultura">Cultura</Button>
-        <Button href="#etapas">Etapas</Button>
-        <Button href="#investimento">Investimento</Button>
+      <Link href="/denuncia">
+        <Button
+          variant="contained"
+          sx={{
+            background:'#86d464',
+            color:'#246044',
+            fontWeight:700,
+            ml:1
+          }}
+        >
+          Ouvidoria
+        </Button>
+      </Link>
+    </Box>
 
-        <Link href="/denuncia">
-          <Button
-            variant="contained"
-            sx={{
-              background:'#86d464',
-              color:'#246044',
-              fontWeight:700,
-              ml:1,
-              '&:hover':{
-                background:'#76c355'
-              }
-            }}
-          >
-            Ouvidoria
-          </Button>
-        </Link>
-      </Box>
 
-    </Toolbar>
+    <IconButton
+      onClick={()=>setOpen(true)}
+      sx={{
+        display:{
+          xs:'flex',
+          md:'none'
+        }
+      }}
+    >
+      <MenuIcon />
+    </IconButton>
+
+   </Toolbar>
   </AppBar>
+
+
+
+  <Drawer
+    anchor="right"
+    open={open}
+    onClose={()=>setOpen(false)}
+  >
+   <Box sx={{ width:260, p:4 }}>
+    <Stack spacing={2}>
+
+      {menuItems.map((item)=>(
+        <Button
+          key={item.label}
+          href={item.href}
+          onClick={()=>setOpen(false)}
+        >
+          {item.label}
+        </Button>
+      ))}
+
+      <Link href="/denuncia">
+        <Button
+          fullWidth
+          variant="contained"
+          sx={{
+            background:'#86d464',
+            color:'#246044'
+          }}
+        >
+          Ouvidoria
+        </Button>
+      </Link>
+
+    </Stack>
+   </Box>
+  </Drawer>
+
+ </>
  )
 }
